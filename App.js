@@ -25,23 +25,40 @@ export default function App() {
         break;
       case 'Favoritos':
         setLivrosFavoritos(livrosFavoritos.concat(livro));  
-      default:
         break;
     }
   };
 
   const removerLivro = (livro, categoria) => {
+    let novosLivros; // Variável genérica para armazenar os novos livros após a remoção
+
     switch(categoria) {
       case 'Lendo':
-        setLivrosLendo(livrosLendo.filter(l => l.id !== livro.id));
+        novosLivros = [];
+        livrosLendo.forEach(l => {
+          if (l.id !== livro.id) {
+            novosLivros.push(l);
+          }
+        });
+        setLivrosLendo(novosLivros);
         break;
       case 'ParaLer':
-        setLivrosParaLer(livrosParaLer.filter(l => l.id !== livro.id));
+        novosLivros = [];
+        livrosParaLer.forEach(l => {
+          if (l.id !== livro.id) {
+            novosLivros.push(l);
+          }
+        });
+        setLivrosParaLer(novosLivros);
         break;
       case 'Favoritos':
-        setLivrosFavoritos(livrosFavoritos.filter(l => l.id !== livro.id));
-        break;
-      default:
+        novosLivros = [];
+        livrosFavoritos.forEach(l => {
+          if (l.id !== livro.id) {
+            novosLivros.push(l);
+          }
+        });
+        setLivrosFavoritos(novosLivros);
         break;
     }
   };
