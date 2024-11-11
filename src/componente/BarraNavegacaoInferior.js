@@ -1,29 +1,27 @@
-
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function BarraNavegacaoInferior({ state, descriptors, navigation }) {
+export default function BarraNavegacaoInferior({ state, navigation }) {
   return (
-    <View style={styles.tabBar}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
+    <View style={estilos.barraDeAbas}>
+      {state.routes.map((rota, indice) => {
+        const estaNaAba = state.index === indice;
 
-        const onPress = () => {
-          const event = navigation.emit({
+        const aoPressionar = () => {
+          const evento = navigation.emit({
             type: 'tabPress',
-            target: route.key,
+            target: rota.key,
           });
 
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
+          if (!estaNaAba && !evento.defaultPrevented) {
+            navigation.navigate(rota.name);
           }
         };
 
         return (
-          <TouchableOpacity key={index} onPress={onPress} style={styles.tabItem}>
-            <Text style={isFocused ? styles.activeTab : styles.inactiveTab}>
-              {route.name}
+          <TouchableOpacity key={indice} onPress={aoPressionar} style={estilos.itemDaAba}>
+            <Text style={estaNaAba ? estilos.abaAtiva : estilos.abaInativa}>
+              {rota.name}
             </Text>
           </TouchableOpacity>
         );
@@ -32,21 +30,21 @@ export default function BarraNavegacaoInferior({ state, descriptors, navigation 
   );
 }
 
-const styles = StyleSheet.create({
-  tabBar: {
+const estilos = StyleSheet.create({
+  barraDeAbas: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#fff',
     paddingVertical: 10,
   },
-  tabItem: {
+  itemDaAba: {
     padding: 10,
   },
-  activeTab: {
+  abaAtiva: {
     fontWeight: 'bold',
     color: '#000',
   },
-  inactiveTab: {
+  abaInativa: {
     color: '#888',
   },
 });

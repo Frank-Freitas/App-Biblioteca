@@ -1,48 +1,48 @@
 import React, { useState } from 'react';
 import { View, TextInput, FlatList, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { fetchLivros } from '../api/apiLivros';
+import { buscarLivros } from '../api/apiLivros';
 
 export default function Buscar({ adicionarLivro }) {
-  const [query, setQuery] = useState('');
+  const [consulta, setConsulta] = useState('');
   const [livros, setLivros] = useState([]);
 
-  const buscarLivros = async () => {
-    const livrosEncontrados = await fetchLivros(query);
+  const buscarLivrosAPI = async () => {
+    const livrosEncontrados = await buscarLivros(consulta);
     setLivros(livrosEncontrados);
   };
 
-  const renderLivroItem = ({ item }) => {
-    const title = item.title || 'Título desconhecido';
-    const authors = item.author || 'Autor desconhecido';
-    const imageUrl = item.imageUrl || 'https://via.placeholder.com/200x300?text=Sem+imagem';
+  const renderizarItemLivro = ({ item }) => {
+    const titulo = item.titulo || 'Título desconhecido';
+    const autores = item.autor || 'Autor desconhecido';
+    const urlImagem = item.urlImagem || 'https://via.placeholder.com/200x300?text=Sem+imagem';
 
     return (
-      <View style={styles.itemContainer}>
+      <View style={estilos.containerItem}>
         <Image 
-          source={{ uri: imageUrl }} 
-          style={styles.bookImage} 
+          source={{ uri: urlImagem }} 
+          style={estilos.imagemLivro} 
         />
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.author}>{authors}</Text>
+        <Text style={estilos.titulo}>{titulo}</Text>
+        <Text style={estilos.autor}>{autores}</Text>
 
-        <View style={styles.buttonsContainer}>
+        <View style={estilos.containerBotoes}>
           <TouchableOpacity
-            style={styles.button}
+            style={estilos.botao}
             onPress={() => adicionarLivro(item, 'Lendo')}
           >
-            <Text style={styles.buttonText}>Lendo</Text>
+            <Text style={estilos.textoBotao}>Lendo</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={estilos.botao}
             onPress={() => adicionarLivro(item, 'ParaLer')}
           >
-            <Text style={styles.buttonText}>Para Ler</Text>
+            <Text style={estilos.textoBotao}>Para Ler</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={estilos.botao}
             onPress={() => adicionarLivro(item, 'Favoritos')}
           >
-            <Text style={styles.buttonText}>Favoritos</Text>
+            <Text style={estilos.textoBotao}>Favoritos</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -50,26 +50,26 @@ export default function Buscar({ adicionarLivro }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={estilos.container}>
       <TextInput
-        style={styles.input}
+        style={estilos.input}
         placeholder="Digite o título do livro"
-        value={query}
-        onChangeText={setQuery}
+        value={consulta}
+        onChangeText={setConsulta}
       />
-      <TouchableOpacity style={styles.searchButton} onPress={buscarLivros}>
-        <Text style={styles.searchButtonText}>Buscar</Text>
+      <TouchableOpacity style={estilos.botaoBuscar} onPress={buscarLivrosAPI}>
+        <Text style={estilos.textoBotaoBuscar}>Buscar</Text>
       </TouchableOpacity>
       <FlatList
         data={livros}
         keyExtractor={(item) => item.id}
-        renderItem={renderLivroItem}
+        renderItem={renderizarItemLivro}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const estilos = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'E9F1FF', 
@@ -88,20 +88,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  searchButton: {
-    backgroundColor: '#FF4D4D', // Azul moderno
+  botaoBuscar: {
+    backgroundColor: '#FF4D4D', 
     paddingVertical: 12,
     borderRadius: 30,
     marginBottom: 20,
     alignItems: 'center',
     elevation: 5,
   },
-  searchButtonText: {
+  textoBotaoBuscar: {
     color: '#FFF',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  itemContainer: {
+  containerItem: {
     marginBottom: 20,
     backgroundColor: '#FFF',
     borderRadius: 10,
@@ -111,32 +111,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  bookImage: {
-    width: 180, // Capa maior
-    height: 270, // Capa maior
+  imagemLivro: {
+    width: 180, 
+    height: 270, 
     marginBottom: 10,
     borderRadius: 10,
     alignSelf: 'center',
   },
-  title: {
+  titulo: {
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 5,
     textAlign: 'center',
     color: '#333',
   },
-  author: {
+  autor: {
     color: '#777',
     fontSize: 16,
     marginBottom: 10,
     textAlign: 'center',
   },
-  buttonsContainer: {
+  containerBotoes: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginTop: 15,
   },
-  button: {
+  botao: {
     backgroundColor: '#FF4D4D',
     paddingVertical: 4,
     paddingHorizontal: 11,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 11,
   },
-  buttonText: {
+  textoBotao: {
     color: '#FFF',
     fontSize: 14,
     fontWeight: 'bold',
