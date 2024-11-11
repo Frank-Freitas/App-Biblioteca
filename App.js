@@ -8,7 +8,6 @@ import ParaLer from './src/tela/ParaLer';
 import Favoritos from './src/tela/Favoritos';
 import BarraNavegacao from './src/componente/BarraNavegacaoInferior';
 
-
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -16,18 +15,16 @@ export default function App() {
   const [livrosParaLer, setLivrosParaLer] = useState([]);
   const [livrosFavoritos, setLivrosFavoritos] = useState([]);
   
- 
   const adicionarLivro = (livro, categoria) => {
     switch(categoria) {
       case 'Lendo':
-        setLivrosLendo([...livrosLendo, livro]);
+        setLivrosLendo(livrosLendo.concat(livro));
         break;
       case 'ParaLer':
-        setLivrosParaLer([...livrosParaLer, livro]);
+        setLivrosParaLer(livrosParaLer.concat(livro));
         break;
       case 'Favoritos':
-        setLivrosFavoritos([...livrosFavoritos, livro]);
-        break;
+        setLivrosFavoritos(livrosFavoritos.concat(livro));  
       default:
         break;
     }
@@ -51,7 +48,15 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator tabBar={(props) => <BarraNavegacao {...props} />}>
+      <Tab.Navigator
+        tabBar={(props) => {
+          return <BarraNavegacao 
+            state={props.state} 
+            descriptors={props.descriptors} 
+            navigation={props.navigation} 
+          />;
+        }}
+      >
         <Tab.Screen name="Buscar">
           {() => <Buscar adicionarLivro={adicionarLivro} />}
         </Tab.Screen>
