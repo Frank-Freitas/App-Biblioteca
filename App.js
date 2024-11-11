@@ -30,7 +30,7 @@ export default function App() {
   };
 
   const removerLivro = (livro, categoria) => {
-    let novosLivros; // Variável genérica para armazenar os novos livros após a remoção
+    let novosLivros;
 
     switch(categoria) {
       case 'Lendo':
