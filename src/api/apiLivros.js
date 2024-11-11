@@ -5,17 +5,21 @@ export const buscarLivros = async (consulta) => {
   try {
     const resposta = await fetch(url);
     const dados = await resposta.json();
+    const livros = [];
     if (dados.items) {
-      return dados.items.map((item) => ({
-        id: item.id,
-        titulo: item.volumeInfo.title,
-        autor: item.volumeInfo.authors?.join(', ') || 'Autor desconhecido',
-        urlImagem: item.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/100x150?text=Sem+imagem',
-      }));
+      dados.items.forEach((item) => {
+        livros.push({
+          id: item.id,
+          titulo: item.volumeInfo.title,
+          autor: item.volumeInfo.authors?.join(', ') || 'Autor desconhecido',
+          urlImagem: item.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/100x150?text=Sem+imagem',
+        });
+      });
     }
-    return [];
+    return livros;
   } catch (erro) {
     console.error('Erro ao buscar livros:', erro);
     return [];
   }
 };
+
